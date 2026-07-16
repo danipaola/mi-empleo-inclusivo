@@ -1,11 +1,11 @@
 [
   {
     "name": "Grupo Arcor",
-    "url": "https://emqm.fa.us6.oraclecloud.com/hcmUI/CandidateExperience/es/sites/grupoarcorgl"
+    "url": ""
   },
   {
     "name": "Coca-Cola FEMSA",
-    "url": "https://coca-colafemsa.hiringroom.com/jobs"
+    "url": ""
   },
   {
     "name": "Ford Argentina",
@@ -16,7 +16,203 @@
     "url": ""
   },
   {
+    "name": "Toyota Argentina",
+    "url": ""
+  },
+  {
+    "name": "Volkswagen Argentina",
+    "url": ""
+  },
+  {
+    "name": "Stellantis",
+    "url": ""
+  },
+  {
+    "name": "Accenture",
+    "url": ""
+  },
+  {
+    "name": "Globant",
+    "url": ""
+  },
+  {
+    "name": "IBM",
+    "url": ""
+  },
+  {
+    "name": "SAP",
+    "url": ""
+  },
+  {
+    "name": "PwC",
+    "url": ""
+  },
+  {
+    "name": "EY",
+    "url": ""
+  },
+  {
+    "name": "KPMG",
+    "url": ""
+  },
+  {
+    "name": "Deloitte",
+    "url": ""
+  },
+  {
     "name": "Randstad Argentina",
+    "url": ""
+  },
+  {
+    "name": "Adecco",
+    "url": ""
+  },
+  {
+    "name": "Manpower",
+    "url": ""
+  },
+  {
+    "name": "Farmacity",
+    "url": ""
+  },
+  {
+    "name": "Carrefour",
+    "url": ""
+  },
+  {
+    "name": "COTO",
+    "url": ""
+  },
+  {
+    "name": "Supermercados DIA",
+    "url": ""
+  },
+  {
+    "name": "Jumbo",
+    "url": ""
+  },
+  {
+    "name": "Unilever",
+    "url": ""
+  },
+  {
+    "name": "Nestlé Argentina",
+    "url": ""
+  },
+  {
+    "name": "Danone",
+    "url": ""
+  },
+  {
+    "name": "Laboratorios Bagó",
+    "url": ""
+  },
+  {
+    "name": "Novartis",
+    "url": ""
+  },
+  {
+    "name": "Boehringer Ingelheim",
+    "url": ""
+  },
+  {
+    "name": "Banco Galicia",
+    "url": ""
+  },
+  {
+    "name": "Banco Santander",
+    "url": ""
+  },
+  {
+    "name": "Banco Nación",
+    "url": ""
+  },
+  {
+    "name": "Banco Provincia",
+    "url": ""
+  },
+  {
+    "name": "BBVA Argentina",
+    "url": ""
+  },
+  {
+    "name": "YPF",
+    "url": ""
+  },
+  {
+    "name": "Telecom",
+    "url": ""
+  },
+  {
+    "name": "Telefónica Movistar",
+    "url": ""
+  },
+  {
+    "name": "Mercado Libre",
+    "url": ""
+  },
+  {
+    "name": "Despegar",
+    "url": ""
+  },
+  {
+    "name": "Natura",
+    "url": ""
+  },
+  {
+    "name": "Disney",
+    "url": ""
+  },
+  {
+    "name": "Metrogas",
+    "url": ""
+  },
+  {
+    "name": "Cervecería y Maltería Quilmes",
+    "url": ""
+  },
+  {
+    "name": "Securitas",
+    "url": ""
+  },
+  {
+    "name": "Arredo",
+    "url": ""
+  },
+  {
+    "name": "McDonald's Argentina",
+    "url": ""
+  },
+  {
+    "name": "ICBC Argentina",
+    "url": ""
+  },
+  {
+    "name": "Swiss Medical",
+    "url": ""
+  },
+  {
+    "name": "OSDE",
+    "url": ""
+  },
+  {
+    "name": "Andreani",
+    "url": ""
+  },
+  {
+    "name": "Amia Empleos",
+    "url": ""
+  },
+  {
+    "name": "Incluyeme",
+    "url": ""
+  },
+  {
+    "name": "SUMATE",
+    "url": ""
+  },
+  {
+    "name": "COPIDIS",
     "url": ""
   }
 ]
