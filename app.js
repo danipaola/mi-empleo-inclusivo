@@ -21,7 +21,7 @@ function allJobs(){return [...customJobs,...remoteJobs].filter((j,i,a)=>a.findIn
 
 async function syncJobs(showMessage=true){
   try{
-    const r=await fetch('./data/vacancies.json?ts='+Date.now(),{cache:'no-store'});
+    const r=await fetch('./vacancies.json?ts='+Date.now(),{cache:'no-store'});
     if(!r.ok)throw new Error('No se pudo leer la actualización');
     const data=await r.json();
     const oldIds=new Set(remoteJobs.map(j=>j.id));

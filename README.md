@@ -4,11 +4,11 @@
 
 La app lee las vacantes desde:
 
-`data/vacancies.json`
+`vacancies.json`
 
 Para agregar una nueva vacante y que aparezca al tocar **Actualizar**:
 
-1. Abrí `data/vacancies.json`.
+1. Abrí `vacancies.json`.
 2. Copiá uno de los bloques de ejemplo.
 3. Cambiá empresa, puesto, ubicación, fecha y enlaces.
 4. Guardá el archivo.
