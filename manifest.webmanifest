@@ -1,23 +1,5 @@
 {
   "name": "Mi Empleo Inclusivo",
-  "short_name": "Mi Empleo",
-  "description": "Buscador personal de vacantes inclusivas",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#fff8fc",
-  "theme_color": "#d96aa7",
-  "lang": "es-AR",
-  "icons": [
-    {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "short_name": "Empleo",
+  "display": "standalone"
 }
