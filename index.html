@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#d95fa4">
 <title>Mi Empleo Inclusivo</title>
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css">
+<link rel="manifest" href="./manifest.webmanifest?v=3">
+<link rel="stylesheet" href="./styles.css?v=3">
 <link rel="icon" href="./icon-192.png">
 </head>
 <body>
@@ -35,6 +35,7 @@
 
   <section id="linkedin" class="panel">
     <button class="add-btn" id="showLinkedinForm">+ Agregar persona</button>
+
     <form id="linkedinForm" class="form-card" hidden>
       <label>Nombre completo
         <input id="linkedinName" required placeholder="Ej.: María Pérez">
@@ -47,13 +48,16 @@
         <button type="button" id="cancelLinkedin" class="outline-btn">Cancelar</button>
       </div>
     </form>
+
     <div id="linkedinSourceList" class="cards"></div>
     <div id="linkedinEmpty" class="empty">No hay personas cargadas.</div>
   </section>
 
   <section id="companies" class="panel">
     <input id="companySearch" class="search" type="search" placeholder="Buscar empresa">
+
     <button class="add-btn" id="showCompanyForm">+ Agregar empresa</button>
+
     <form id="companyForm" class="form-card" hidden>
       <label>Nombre de la empresa
         <input id="companyName" required placeholder="Ej.: Nueva empresa">
@@ -66,11 +70,12 @@
         <button type="button" id="cancelCompany" class="outline-btn">Cancelar</button>
       </div>
     </form>
+
     <div id="companyList" class="cards"></div>
     <div id="companyEmpty" class="empty">No se encontró esa empresa.</div>
   </section>
 </main>
 
-<script src="./app.js"></script>
+<script src="./app.js?v=3"></script>
 </body>
 </html>

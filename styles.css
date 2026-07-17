@@ -19,7 +19,7 @@ main{width:min(900px,92%);margin:24px auto 48px}
 .topbar span{display:block;font-weight:700}.topbar strong{display:block;font-size:44px;margin-top:4px}
 #statusText{color:var(--muted);min-height:22px}
 .search{width:100%;margin:0 0 14px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fff}
-.add-btn{width:100%;margin-bottom:16px;background:var(--f);color:#fff}
+.add-btn{width:100%;margin-bottom:16px;background:var(--f);color:#fff;font-size:17px}
 .form-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:18px}
 .form-card label{display:block;font-weight:700;margin-bottom:14px;color:var(--fd)}
 .form-card input{width:100%;margin-top:7px;padding:13px;border:1px solid var(--line);border-radius:12px}
