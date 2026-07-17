@@ -1,11 +1,12 @@
 {
   "name": "Mi Empleo Inclusivo",
   "short_name": "Empleo Inclusivo",
-  "start_url": "./?v=21",
+  "description": "Organizador personal de vacantes, empresas y publicaciones laborales inclusivas.",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#fff7fb",
-  "theme_color": "#d957a1",
+  "theme_color": "#d84a91",
   "lang": "es-AR",
   "icons": [
     {
