@@ -1,10 +1,10 @@
 {
   "name": "Mi Empleo Inclusivo",
   "short_name": "Empleo Inclusivo",
-  "start_url": "./?v=21",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#fff7fb",
+  "background_color": "#fff5fa",
   "theme_color": "#d957a1",
   "lang": "es-AR",
   "icons": [
