@@ -34,12 +34,40 @@
   </section>
 
   <section id="linkedin" class="panel">
-    <div id="linkedinList" class="cards"></div>
-    <div id="linkedinEmpty" class="empty">No hay publicaciones cargadas.</div>
+    <button class="add-btn" id="showLinkedinForm">+ Agregar persona</button>
+    <form id="linkedinForm" class="form-card" hidden>
+      <label>Nombre completo
+        <input id="linkedinName" required placeholder="Ej.: María Pérez">
+      </label>
+      <label>Link de LinkedIn
+        <input id="linkedinUrl" type="url" required placeholder="https://www.linkedin.com/in/...">
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="primary-btn">Guardar</button>
+        <button type="button" id="cancelLinkedin" class="outline-btn">Cancelar</button>
+      </div>
+    </form>
+    <div id="linkedinSourceList" class="cards"></div>
+    <div id="linkedinEmpty" class="empty">No hay personas cargadas.</div>
   </section>
 
   <section id="companies" class="panel">
+    <input id="companySearch" class="search" type="search" placeholder="Buscar empresa">
+    <button class="add-btn" id="showCompanyForm">+ Agregar empresa</button>
+    <form id="companyForm" class="form-card" hidden>
+      <label>Nombre de la empresa
+        <input id="companyName" required placeholder="Ej.: Nueva empresa">
+      </label>
+      <label>Link del portal
+        <input id="companyUrl" type="url" required placeholder="https://...">
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="primary-btn">Guardar</button>
+        <button type="button" id="cancelCompany" class="outline-btn">Cancelar</button>
+      </div>
+    </form>
     <div id="companyList" class="cards"></div>
+    <div id="companyEmpty" class="empty">No se encontró esa empresa.</div>
   </section>
 </main>
 
