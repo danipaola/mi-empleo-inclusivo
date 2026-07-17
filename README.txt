@@ -1,11 +1,16 @@
-Mi Empleo Inclusivo
+VERSIÓN 21
 
-Subí todos estos archivos y carpetas a GitHub reemplazando los anteriores.
-Esta versión tiene los datos incluidos dentro de app.js para que no aparezcan vacíos:
-- Empresas cargadas
-- Julieta, Silvina y Karina cargadas
-- Vacantes de seguimiento cargadas
-- LinkedIn sin foto y sin Puesto
+1. Descomprimí el ZIP.
+2. Subí index.html, app.js, styles.css, sw.js, manifest.webmanifest y la carpeta icons a GitHub.
+3. Reemplazá los archivos anteriores.
+4. Abrí la página agregando ?v=21 al final.
 
-Después de subirla, esperá unos minutos y actualizá la página.
-Si aparece la versión anterior, borrá los datos del sitio o desinstalá y volvé a instalar la app.
+Incluye:
+- Título “LinkedIn”.
+- Tarjetas de Julieta, Silvina y Karina.
+- Silvina: Ingeniera/o Microsoft Fabric.
+- Karina: Orientador/a – Taller Manual.
+- Formulario nuevo: solo nombre completo y link del perfil.
+- Vacantes inventadas eliminadas.
+
+Importante: GitHub Pages no puede leer automáticamente publicaciones de LinkedIn. El botón Actualizar explica esta limitación y los enlaces guardados abren LinkedIn.
