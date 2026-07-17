@@ -1,19 +1,26 @@
-[
-  "Administración de Personal",
-  "Administrativo",
-  "Administrativa",
-  "Analista Administrativo",
-  "Recursos Humanos administrativo",
-  "Back Office",
-  "Help Desk",
-  "Mesa de Ayuda",
-  "Data Entry",
-  "Gestión Documental",
-  "Soporte Administrativo",
-  "Operaciones Administrativas",
-  "Control Documental",
-  "Coordinación Administrativa",
-  "Legajos",
-  "Altas y bajas",
-  "Contratos"
-]
+{
+  "include": [
+    "administrativo",
+    "administrativa",
+    "administración",
+    "administracion",
+    "administración de personal",
+    "administracion de personal",
+    "recursos humanos administrativo",
+    "rrhh administrativo",
+    "back office",
+    "help desk",
+    "mesa de ayuda",
+    "data entry",
+    "gestión documental",
+    "gestion documental",
+    "soporte administrativo",
+    "operaciones administrativas"
+  ],
+  "exclude": [
+    "liquidación de sueldos",
+    "liquidacion de sueldos",
+    "payroll",
+    "compensaciones"
+  ]
+}

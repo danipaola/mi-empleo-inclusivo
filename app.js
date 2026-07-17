@@ -1,198 +1,209 @@
 
-let vacancies=[], baseCompanies=[], baseLinkedin=[];
-const $=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+const STORAGE = {
+  companies: "mei_custom_companies",
+  people: "mei_custom_people",
+  sent: "mei_cv_sent"
+};
 
-const sent=JSON.parse(localStorage.getItem('mi-empleo-cv-enviado')||'{}');
-let addedCompanies=JSON.parse(localStorage.getItem('mi-empleo-empresas-agregadas')||'[]');
-let addedLinkedin=JSON.parse(localStorage.getItem('mi-empleo-linkedin-agregados')||'[]');
+let baseCompanies = [];
+let basePeople = [];
+let vacancies = [];
+let customCompanies = JSON.parse(localStorage.getItem(STORAGE.companies) || "[]");
+let customPeople = JSON.parse(localStorage.getItem(STORAGE.people) || "[]");
+let sent = JSON.parse(localStorage.getItem(STORAGE.sent) || "{}");
 
-function saveSent(){localStorage.setItem('mi-empleo-cv-enviado',JSON.stringify(sent));}
-function saveCompanies(){localStorage.setItem('mi-empleo-empresas-agregadas',JSON.stringify(addedCompanies));}
-function saveLinkedin(){localStorage.setItem('mi-empleo-linkedin-agregados',JSON.stringify(addedLinkedin));}
-function allCompanies(){return [...baseCompanies,...addedCompanies];}
-function allLinkedin(){return [...baseLinkedin,...addedLinkedin];}
-
-async function loadData(showMessage=false){
-  try{
-    const stamp=Date.now();
-    const [v,c,l]=await Promise.all([
-      fetch('./vacancies.json?ts='+stamp,{cache:'no-store'}),
-      fetch('./companies.json?ts='+stamp,{cache:'no-store'}),
-      fetch('./linkedin_sources.json?ts='+stamp,{cache:'no-store'})
-    ]);
-    if(!v.ok||!c.ok||!l.ok) throw new Error('No se pudieron leer los archivos');
-    vacancies=await v.json();
-    baseCompanies=await c.json();
-    baseLinkedin=await l.json();
-    renderVacancies();
-    renderCompanies();
-    renderLinkedin();
-    if(showMessage) $('#statusText').textContent='La lista está actualizada.';
-  }catch(e){
-    $('#statusText').textContent='No se pudo actualizar. Revisá que todos los archivos estén subidos.';
+async function loadJSON(path, fallback=[]) {
+  try {
+    const response = await fetch(path, {cache:"no-store"});
+    if (!response.ok) throw new Error("No se pudo cargar " + path);
+    return await response.json();
+  } catch (error) {
+    console.warn(error);
+    return fallback;
   }
 }
 
-function renderVacancies(){
-  const box=$('#vacancyList');
-  box.innerHTML='';
-  $('#vacancyCount').textContent=vacancies.length;
+function safeUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return ["http:","https:"].includes(parsed.protocol) ? parsed.href : "#";
+  } catch { return "#"; }
+}
 
-  vacancies.forEach(v=>{
-    const card=document.createElement('article');
-    card.className='card';
-    card.innerHTML=`
-      <div class="company">${esc(v.company)}</div>
-      <h2>${esc(v.title)}</h2>
-      <div class="actions">
-        <a class="primary" href="${esc(v.url)}" target="_blank" rel="noopener">Postularme</a>
-        <a class="secondary" href="${esc(v.portal||v.url)}" target="_blank" rel="noopener">Portal oficial</a>
-      </div>
-      <label class="sent">
-        <input type="checkbox" data-vacancy="${esc(v.id)}" ${sent[v.id]?'checked':''}>
+function esc(value="") {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function renderSummary() {
+  $("#vacancyCount").textContent = vacancies.filter(v => v.is_new).length;
+  $("#publicationCount").textContent = basePeople.length + customPeople.length;
+  $("#companyCount").textContent = baseCompanies.length + customCompanies.length;
+}
+
+function renderVacancies() {
+  const list = $("#vacancyList");
+  if (!vacancies.length) {
+    list.innerHTML = '<div class="empty">No hay vacantes cargadas por el momento.</div>';
+    return;
+  }
+  list.innerHTML = vacancies.map(v => `
+    <article class="card">
+      <h3>${esc(v.title)}</h3>
+      <p><strong>${esc(v.company)}</strong></p>
+      <p>${esc(v.location || "")}</p>
+      <p>${esc(v.date || "")}</p>
+      <label class="checkline">
+        <input type="checkbox" data-vacancy="${esc(v.id)}" ${sent[v.id] ? "checked" : ""}>
         CV enviado
-      </label>`;
-    box.appendChild(card);
+      </label>
+      <div class="actions">
+        <a class="primary" href="${safeUrl(v.apply_url)}" target="_blank" rel="noopener">Postularme</a>
+        <a class="secondary" href="${safeUrl(v.official_url)}" target="_blank" rel="noopener">Portal oficial</a>
+      </div>
+    </article>
+  `).join("");
+  $$("[data-vacancy]").forEach(box => box.addEventListener("change", e => {
+    sent[e.target.dataset.vacancy] = e.target.checked;
+    localStorage.setItem(STORAGE.sent, JSON.stringify(sent));
+  }));
+}
+
+function renderCompanies(query="") {
+  const normalized = query.trim().toLowerCase();
+  const all = [
+    ...baseCompanies.map(x => ({...x, custom:false})),
+    ...customCompanies.map((x,i) => ({...x, custom:true, customIndex:i}))
+  ].filter(c => c.name.toLowerCase().includes(normalized))
+   .sort((a,b) => a.name.localeCompare(b.name,"es"));
+
+  $("#companyList").innerHTML = all.length ? all.map(c => `
+    <article class="card">
+      <h3>${esc(c.name)}</h3>
+      <div class="actions">
+        <a class="primary" href="${safeUrl(c.url)}" target="_blank" rel="noopener">Portal de empleos</a>
+        ${c.custom ? `<button class="danger delete-company" data-index="${c.customIndex}">Eliminar</button>` : ""}
+      </div>
+    </article>
+  `).join("") : '<div class="empty">No se encontró esa empresa.</div>';
+
+  $$(".delete-company").forEach(btn => btn.addEventListener("click", () => {
+    customCompanies.splice(Number(btn.dataset.index),1);
+    localStorage.setItem(STORAGE.companies, JSON.stringify(customCompanies));
+    renderCompanies($("#companySearch").value);
+    renderSummary();
+  }));
+}
+
+function renderPeople() {
+  const all = [
+    ...basePeople.map(x => ({...x, custom:false})),
+    ...customPeople.map((x,i) => ({...x, custom:true, customIndex:i}))
+  ];
+  $("#linkedinList").innerHTML = all.length ? all.map(p => `
+    <article class="card">
+      <h3>${esc(p.name)}</h3>
+      <p class="label">Última publicación</p>
+      <p>${esc(p.publication)}</p>
+      <p class="label">Puesto</p>
+      <p><strong>${esc(p.position)}</strong></p>
+      <div class="actions">
+        <a class="primary" href="${safeUrl(p.url)}" target="_blank" rel="noopener">Abrir publicación</a>
+        ${p.custom ? `<button class="danger delete-person" data-index="${p.customIndex}">Eliminar</button>` : ""}
+      </div>
+    </article>
+  `).join("") : '<div class="empty">Todavía no agregaste publicaciones.</div>';
+
+  $$(".delete-person").forEach(btn => btn.addEventListener("click", () => {
+    customPeople.splice(Number(btn.dataset.index),1);
+    localStorage.setItem(STORAGE.people, JSON.stringify(customPeople));
+    renderPeople();
+    renderSummary();
+  }));
+}
+
+function setupTabs() {
+  $$(".tab").forEach(tab => tab.addEventListener("click", () => {
+    $$(".tab").forEach(t => t.classList.toggle("active", t === tab));
+    $$(".panel").forEach(p => p.classList.toggle("active", p.id === tab.dataset.tab));
+  }));
+}
+
+function setupDialogs() {
+  const companyModal = $("#companyModal");
+  const personModal = $("#personModal");
+  $("#openCompanyModal").onclick = () => companyModal.showModal();
+  $("#openPersonModal").onclick = () => personModal.showModal();
+  $$(".close-dialog").forEach(b => b.onclick = () => b.closest("dialog").close());
+
+  $("#companyForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    customCompanies.push({name:form.get("name").trim(), url:form.get("url").trim()});
+    localStorage.setItem(STORAGE.companies, JSON.stringify(customCompanies));
+    e.currentTarget.reset();
+    companyModal.close();
+    renderCompanies($("#companySearch").value);
+    renderSummary();
   });
 
-  $('#vacancyEmpty').hidden=vacancies.length>0;
-  document.querySelectorAll('[data-vacancy]').forEach(x=>{
-    x.onchange=()=>{
-      sent[x.dataset.vacancy]=x.checked;
-      saveSent();
-    };
+  $("#personForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    customPeople.push({
+      name:form.get("name").trim(),
+      publication:form.get("publication").trim(),
+      position:form.get("position").trim(),
+      url:form.get("url").trim()
+    });
+    localStorage.setItem(STORAGE.people, JSON.stringify(customPeople));
+    e.currentTarget.reset();
+    personModal.close();
+    renderPeople();
+    renderSummary();
   });
 }
 
-function renderCompanies(){
-  const q=$('#companySearch').value.toLowerCase().trim();
-  const filtered=allCompanies().filter(c=>c.name.toLowerCase().includes(q));
-  const box=$('#companyList');
-  box.innerHTML='';
-
-  filtered.forEach(c=>{
-    const custom=addedCompanies.some(x=>x.name===c.name && x.url===c.url);
-    const card=document.createElement('article');
-    card.className='card company-card';
-    card.innerHTML=`
-      <div class="company">${esc(c.name)}</div>
-      <a href="${esc(c.url)}" target="_blank" rel="noopener">Abrir empresa</a>
-      ${custom?`<button class="delete-btn" data-delete-company="${esc(c.url)}">Eliminar empresa agregada</button>`:''}`;
-    box.appendChild(card);
+function setupInstall() {
+  let deferredPrompt;
+  const btn = $("#installBtn");
+  window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    btn.classList.remove("hidden");
   });
-
-  $('#companyEmpty').hidden=filtered.length>0;
-  document.querySelectorAll('[data-delete-company]').forEach(b=>{
-    b.onclick=()=>{
-      addedCompanies=addedCompanies.filter(x=>x.url!==b.dataset.deleteCompany);
-      saveCompanies();
-      renderCompanies();
-    };
+  btn.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    btn.classList.add("hidden");
   });
 }
 
-function renderLinkedin(){
-  const list=allLinkedin();
-  const box=$('#linkedinSourceList');
-  box.innerHTML='';
+async function init() {
+  setupTabs();
+  setupDialogs();
+  setupInstall();
+  $("#companySearch").addEventListener("input", e => renderCompanies(e.target.value));
+  $("#refreshBtn").addEventListener("click", () => location.reload());
 
-  list.forEach(p=>{
-    const custom=addedLinkedin.some(x=>x.name===p.name && x.url===p.url);
-    const card=document.createElement('article');
-    card.className='card person-card';
-    card.innerHTML=`
-      <div class="person">${esc(p.name)}</div>
-      <a href="${esc(p.url)}" target="_blank" rel="noopener">Abrir LinkedIn</a>
-      ${custom?`<button class="delete-btn" data-delete-linkedin="${esc(p.url)}">Eliminar persona agregada</button>`:''}`;
-    box.appendChild(card);
-  });
+  [baseCompanies, basePeople, vacancies] = await Promise.all([
+    loadJSON("data/companies.json", []),
+    loadJSON("data/linkedin_sources.json", []),
+    loadJSON("data/vacancies.json", [])
+  ]);
 
-  $('#linkedinEmpty').hidden=list.length>0;
-  document.querySelectorAll('[data-delete-linkedin]').forEach(b=>{
-    b.onclick=()=>{
-      addedLinkedin=addedLinkedin.filter(x=>x.url!==b.dataset.deleteLinkedin);
-      saveLinkedin();
-      renderLinkedin();
-    };
-  });
-}
-
-$('#companySearch').addEventListener('input',renderCompanies);
-
-$('#showCompanyForm').onclick=()=>{
-  $('#companyForm').hidden=false;
-  $('#companyName').focus();
-};
-$('#cancelCompany').onclick=()=>{
-  $('#companyForm').reset();
-  $('#companyForm').hidden=true;
-};
-$('#companyForm').onsubmit=e=>{
-  e.preventDefault();
-  const name=$('#companyName').value.trim();
-  const url=$('#companyUrl').value.trim();
-  if(!name||!url) return;
-  addedCompanies.push({name,url});
-  saveCompanies();
-  e.target.reset();
-  e.target.hidden=true;
+  renderSummary();
+  renderVacancies();
   renderCompanies();
-};
+  renderPeople();
 
-$('#showLinkedinForm').onclick=()=>{
-  $('#linkedinForm').hidden=false;
-  $('#linkedinName').focus();
-};
-$('#cancelLinkedin').onclick=()=>{
-  $('#linkedinForm').reset();
-  $('#linkedinForm').hidden=true;
-};
-$('#linkedinForm').onsubmit=e=>{
-  e.preventDefault();
-  const name=$('#linkedinName').value.trim();
-  const url=$('#linkedinUrl').value.trim();
-  if(!name||!url) return;
-  addedLinkedin.push({name,url});
-  saveLinkedin();
-  e.target.reset();
-  e.target.hidden=true;
-  renderLinkedin();
-};
-
-document.querySelectorAll('.tab').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    $('#'+b.dataset.tab).classList.add('active');
-  };
-});
-
-$('#refreshBtn').onclick=()=>loadData(true);
-
-let deferredPrompt;
-const install=$('#installBtn');
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();
-  deferredPrompt=e;
-  install.hidden=false;
-});
-install.onclick=async()=>{
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt=null;
-  install.hidden=true;
-};
-
-if('serviceWorker' in navigator){
-  window.addEventListener('load',async()=>{
-    try{
-      const reg=await navigator.serviceWorker.register('./sw.js?v=3');
-      await reg.update();
-    }catch(e){}
-  });
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(console.error);
+  }
 }
-
-loadData(false);
+document.addEventListener("DOMContentLoaded", init);
