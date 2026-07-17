@@ -1,25 +1,99 @@
-<!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8"><title>Mi Empleo Inclusivo Beta 1</title></head>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#d957a1">
+  <meta name="description" content="Mi Empleo Inclusivo">
+  <title>Mi Empleo Inclusivo</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-<h2>Mi Empleo Inclusivo - Beta 1</h2>
+  <header class="hero">
+    <div class="hero-title">
+      <span class="hero-icon">💼</span>
+      <div>
+        <small>Mi búsqueda laboral</small>
+        <h1>Mi Empleo Inclusivo</h1>
+      </div>
+    </div>
+    <button id="installBtn" class="install-btn hidden">Instalar app</button>
+  </header>
 
-<h3>LinkedIn</h3>
-<div class="card">
-<b>Silvina Alonso</b><br>
-Última publicación: Oportunidad Laboral para Personas con Discapacidad<br>
-<button>Abrir publicación</button>
-</div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="vacancies"><span>💼</span>Vacantes</button>
+    <button class="tab" data-tab="linkedin"><span>in</span>LinkedIn</button>
+    <button class="tab" data-tab="companies"><span>🏢</span>Empresas</button>
+  </nav>
 
-<div class="card">
-<b>Karina Guerschberg</b><br>
-Última publicación: BÚSQUEDA LABORAL (solo comparto)<br>
-<button>Abrir publicación</button>
-</div>
+  <main>
+    <section id="vacancies" class="panel active">
+      <div class="section-bar">
+        <div>
+          <h2>Vacantes para mi perfil</h2>
+          <p>Administración, RRHH administrativo, back office, help desk y tareas relacionadas.</p>
+        </div>
+        <button id="refreshBtn" class="icon-btn" title="Actualizar">↻</button>
+      </div>
+      <div id="vacancyList" class="card-list"></div>
+    </section>
 
-<div class="card">
-<b>Julieta Mariela Moranzoni</b><br>
-Última publicación: Administrativo/a de Producción<br>
-<button>Abrir publicación</button>
-</div>
+    <section id="linkedin" class="panel">
+      <div class="section-bar">
+        <div>
+          <h2>Publicaciones de LinkedIn</h2>
+          <p>Accesos rápidos a oportunidades compartidas.</p>
+        </div>
+        <button id="openPersonModal" class="add-circle" title="Agregar persona">＋</button>
+      </div>
+      <div id="linkedinList" class="card-list"></div>
+    </section>
 
-</body></html>
+    <section id="companies" class="panel">
+      <div class="section-bar">
+        <div>
+          <h2>Empresas inclusivas</h2>
+          <p>Buscá y abrí directamente sus portales.</p>
+        </div>
+        <button id="openCompanyModal" class="add-circle" title="Agregar empresa">＋</button>
+      </div>
+      <div class="search-box">
+        <span>⌕</span>
+        <input id="companySearch" type="search" placeholder="Buscar empresa">
+      </div>
+      <div id="companyList" class="company-grid"></div>
+    </section>
+  </main>
+
+  <dialog id="companyModal">
+    <form id="companyForm">
+      <div class="dialog-head">
+        <h3>Agregar empresa</h3>
+        <button type="button" class="dialog-close close-dialog">×</button>
+      </div>
+      <label>Nombre de la empresa<input name="name" required></label>
+      <label>Link del portal de empleos<input name="url" type="url" required placeholder="https://..."></label>
+      <label>Dominio para el logo <small>(opcional)</small><input name="domain" placeholder="empresa.com"></label>
+      <button type="submit" class="primary-btn">Guardar empresa</button>
+    </form>
+  </dialog>
+
+  <dialog id="personModal">
+    <form id="personForm">
+      <div class="dialog-head">
+        <h3>Agregar publicación</h3>
+        <button type="button" class="dialog-close close-dialog">×</button>
+      </div>
+      <label>Nombre completo<input name="name" required></label>
+      <label>Última publicación<input name="publication" required></label>
+      <label>Link de la publicación<input name="url" type="url" required placeholder="https://www.linkedin.com/..."></label>
+      <button type="submit" class="primary-btn">Guardar publicación</button>
+    </form>
+  </dialog>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

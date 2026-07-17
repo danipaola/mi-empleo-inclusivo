@@ -1,122 +1,152 @@
 [
   {
     "name": "Accenture",
-    "url": "https://www.accenture.com/ar-es/careers"
+    "url": "https://www.accenture.com/ar-es/careers",
+    "domain": "accenture.com"
   },
   {
     "name": "Arcor",
-    "url": "https://www.arcor.com/ar/trabaja-con-nosotros"
+    "url": "https://www.arcor.com/ar/trabaja-con-nosotros",
+    "domain": "arcor.com"
   },
   {
     "name": "Banco Galicia",
-    "url": "https://www.galicia.ar/personas/trabaja-con-nosotros"
+    "url": "https://www.galicia.ar/personas/trabaja-con-nosotros",
+    "domain": "galicia.ar"
   },
   {
     "name": "Banco Nación",
-    "url": "https://www.bna.com.ar/Institucional/TrabajaConNosotros"
+    "url": "https://www.bna.com.ar/Institucional/TrabajaConNosotros",
+    "domain": "bna.com.ar"
   },
   {
     "name": "Banco Provincia",
-    "url": "https://www.bancoprovincia.com.ar/web/trabaja_con_nosotros"
+    "url": "https://www.bancoprovincia.com.ar/web/trabaja_con_nosotros",
+    "domain": "bancoprovincia.com.ar"
   },
   {
     "name": "Bayer",
-    "url": "https://www.bayer.com/es/ar/carrera"
+    "url": "https://www.bayer.com/es/ar/carrera",
+    "domain": "bayer.com"
   },
   {
     "name": "CILSA",
-    "url": "https://www.cilsa.org/"
+    "url": "https://www.cilsa.org/",
+    "domain": "cilsa.org"
   },
   {
     "name": "Coca-Cola FEMSA",
-    "url": "https://coca-colafemsa.com/trabaja-con-nosotros/"
+    "url": "https://coca-colafemsa.com/trabaja-con-nosotros/",
+    "domain": "coca-colafemsa.com"
   },
   {
     "name": "Coto",
-    "url": "https://www.coto.com.ar/empleos/"
+    "url": "https://www.coto.com.ar/empleos/",
+    "domain": "coto.com.ar"
   },
   {
     "name": "Deloitte",
-    "url": "https://www2.deloitte.com/ar/es/careers.html"
+    "url": "https://www2.deloitte.com/ar/es/careers.html",
+    "domain": "deloitte.com"
   },
   {
     "name": "Ford Argentina",
-    "url": "https://corporate.ford.com/careers.html"
+    "url": "https://corporate.ford.com/careers.html",
+    "domain": "ford.com"
   },
   {
     "name": "Globant",
-    "url": "https://career.globant.com/"
+    "url": "https://career.globant.com/",
+    "domain": "globant.com"
   },
   {
     "name": "Grupo Techint",
-    "url": "https://careers.techint.com/"
+    "url": "https://careers.techint.com/",
+    "domain": "techint.com"
   },
   {
     "name": "IBM",
-    "url": "https://www.ibm.com/careers"
+    "url": "https://www.ibm.com/careers",
+    "domain": "ibm.com"
   },
   {
     "name": "IRSA",
-    "url": "https://www.irsa.com.ar/trabaja-con-nosotros/"
+    "url": "https://www.irsa.com.ar/trabaja-con-nosotros/",
+    "domain": "irsa.com.ar"
   },
   {
     "name": "La Caja",
-    "url": "https://www.lacaja.com.ar/trabaja-con-nosotros"
+    "url": "https://www.lacaja.com.ar/trabaja-con-nosotros",
+    "domain": "lacaja.com.ar"
   },
   {
     "name": "Mercado Libre",
-    "url": "https://careers-meli.mercadolibre.com/"
+    "url": "https://careers-meli.mercadolibre.com/",
+    "domain": "mercadolibre.com"
   },
   {
     "name": "Microsoft",
-    "url": "https://careers.microsoft.com/"
+    "url": "https://careers.microsoft.com/",
+    "domain": "microsoft.com"
   },
   {
     "name": "Molinos Río de la Plata",
-    "url": "https://www.molinos.com.ar/trabaja-con-nosotros/"
+    "url": "https://www.molinos.com.ar/trabaja-con-nosotros/",
+    "domain": "molinos.com.ar"
   },
   {
     "name": "Natura",
-    "url": "https://www.natura.com.ar/trabaja-con-nosotros"
+    "url": "https://www.natura.com.ar/trabaja-con-nosotros",
+    "domain": "natura.com.ar"
   },
   {
     "name": "Nestlé",
-    "url": "https://www.nestle.com.ar/jobs"
+    "url": "https://www.nestle.com.ar/jobs",
+    "domain": "nestle.com.ar"
   },
   {
     "name": "PedidosYa",
-    "url": "https://careers.deliveryhero.com/pedidosya"
+    "url": "https://careers.deliveryhero.com/pedidosya",
+    "domain": "pedidosya.com"
   },
   {
     "name": "PwC Argentina",
-    "url": "https://www.pwc.com.ar/es/carreras.html"
+    "url": "https://www.pwc.com.ar/es/carreras.html",
+    "domain": "pwc.com.ar"
   },
   {
     "name": "Randstad",
-    "url": "https://www.randstad.com.ar/trabajos/"
+    "url": "https://www.randstad.com.ar/trabajos/",
+    "domain": "randstad.com.ar"
   },
   {
     "name": "Santander",
-    "url": "https://www.santander.com.ar/banco/online/personas/acerca-de-nosotros/trabaja-con-nosotros"
+    "url": "https://www.santander.com.ar/banco/online/personas/acerca-de-nosotros/trabaja-con-nosotros",
+    "domain": "santander.com.ar"
   },
   {
     "name": "Telefónica Movistar",
-    "url": "https://jobs.telefonica.com/"
+    "url": "https://jobs.telefonica.com/",
+    "domain": "telefonica.com"
   },
   {
     "name": "Toyota Argentina",
-    "url": "https://www.toyota.com.ar/trabaja-con-nosotros"
+    "url": "https://www.toyota.com.ar/trabaja-con-nosotros",
+    "domain": "toyota.com.ar"
   },
   {
     "name": "Unilever",
-    "url": "https://careers.unilever.com/"
+    "url": "https://careers.unilever.com/",
+    "domain": "unilever.com"
   },
   {
     "name": "YPF",
-    "url": "https://www.ypf.com/trabaja-con-nosotros"
+    "url": "https://www.ypf.com/trabaja-con-nosotros",
+    "domain": "ypf.com"
   },
   {
     "name": "Zonajobs",
-    "url": "https://www.zonajobs.com.ar/"
+    "url": "https://www.zonajobs.com.ar/",
+    "domain": "zonajobs.com.ar"
   }
 ]
