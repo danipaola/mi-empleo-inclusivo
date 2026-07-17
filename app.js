@@ -1,48 +1,198 @@
 
-const BASE_COMPANIES = [{"name": "Accenture", "url": "https://www.accenture.com/ar-es/careers", "domain": "accenture.com"}, {"name": "Arcor", "url": "https://www.arcor.com/ar/trabaja-con-nosotros", "domain": "arcor.com"}, {"name": "Banco Galicia", "url": "https://www.galicia.ar/personas/trabaja-con-nosotros", "domain": "galicia.ar"}, {"name": "Banco Nación", "url": "https://www.bna.com.ar/Institucional/TrabajaConNosotros", "domain": "bna.com.ar"}, {"name": "Banco Provincia", "url": "https://www.bancoprovincia.com.ar/web/trabaja_con_nosotros", "domain": "bancoprovincia.com.ar"}, {"name": "CILSA", "url": "https://www.cilsa.org/", "domain": "cilsa.org"}, {"name": "Coca-Cola FEMSA", "url": "https://coca-colafemsa.com/trabaja-con-nosotros/", "domain": "coca-colafemsa.com"}, {"name": "Coto", "url": "https://www.coto.com.ar/empleos/", "domain": "coto.com.ar"}, {"name": "Deloitte", "url": "https://www2.deloitte.com/ar/es/careers.html", "domain": "deloitte.com"}, {"name": "Ford Argentina", "url": "https://corporate.ford.com/careers.html", "domain": "ford.com"}, {"name": "Globant", "url": "https://career.globant.com/", "domain": "globant.com"}, {"name": "IBM", "url": "https://www.ibm.com/careers", "domain": "ibm.com"}, {"name": "Mercado Libre", "url": "https://careers-meli.mercadolibre.com/", "domain": "mercadolibre.com"}, {"name": "Microsoft", "url": "https://careers.microsoft.com/", "domain": "microsoft.com"}, {"name": "Natura", "url": "https://www.natura.com.ar/trabaja-con-nosotros", "domain": "natura.com.ar"}, {"name": "Nestlé", "url": "https://www.nestle.com.ar/jobs", "domain": "nestle.com.ar"}, {"name": "PwC Argentina", "url": "https://www.pwc.com.ar/es/carreras.html", "domain": "pwc.com.ar"}, {"name": "Randstad", "url": "https://www.randstad.com.ar/trabajos/", "domain": "randstad.com.ar"}, {"name": "Santander", "url": "https://www.santander.com.ar/banco/online/personas/acerca-de-nosotros/trabaja-con-nosotros", "domain": "santander.com.ar"}, {"name": "Toyota Argentina", "url": "https://www.toyota.com.ar/trabaja-con-nosotros", "domain": "toyota.com.ar"}, {"name": "Unilever", "url": "https://careers.unilever.com/", "domain": "unilever.com"}, {"name": "YPF", "url": "https://www.ypf.com/trabaja-con-nosotros", "domain": "ypf.com"}];
-const BASE_PEOPLE = [{"name": "Julieta Mariela Moranzoni", "publication": "Administrativo/a de Producción", "url": "https://www.linkedin.com/"}, {"name": "Silvina Alonso", "publication": "Oportunidad Laboral para Personas con Discapacidad", "url": "https://www.linkedin.com/in/silvina-alonso-22243a46"}, {"name": "Karina Guerschberg", "publication": "BÚSQUEDA LABORAL (solo comparto)", "url": "https://www.linkedin.com/in/karina-guerschberg"}];
-const BASE_VACANCIES = [{"id": "arcor-auxiliar-administrativo", "title": "Auxiliar Administrativo/a", "company": "Arcor", "domain": "arcor.com", "location": "Buenos Aires", "modality": "Consultar modalidad", "date": "Seguimiento", "apply_url": "https://www.arcor.com/ar/trabaja-con-nosotros", "official_url": "https://www.arcor.com/ar/trabaja-con-nosotros"}, {"id": "cocacola-contratos-presupuestos", "title": "Analista de Contratos y Presupuestos", "company": "Coca-Cola FEMSA", "domain": "coca-colafemsa.com", "location": "Buenos Aires", "modality": "Consultar modalidad", "date": "Seguimiento", "apply_url": "https://coca-colafemsa.com/trabaja-con-nosotros/", "official_url": "https://coca-colafemsa.com/trabaja-con-nosotros/"}, {"id": "municipalidad-vl-administrativo", "title": "Administrativo/a", "company": "Municipalidad de Vicente López", "domain": "vicentelopez.gov.ar", "location": "Vicente López", "modality": "Presencial / consultar", "date": "Seguimiento", "apply_url": "https://www.vicentelopez.gov.ar/", "official_url": "https://www.vicentelopez.gov.ar/"}, {"id": "casa-moneda-digitalizacion", "title": "Administrativo/a de Digitalización", "company": "Casa de Moneda", "domain": "casademoneda.gob.ar", "location": "CABA", "modality": "Consultar modalidad", "date": "Seguimiento", "apply_url": "https://www.argentina.gob.ar/casademoneda", "official_url": "https://www.argentina.gob.ar/casademoneda"}, {"id": "natura-base-diversidad", "title": "Base de Talentos – Diversidad", "company": "Natura", "domain": "natura.com.ar", "location": "Buenos Aires", "modality": "Consultar modalidad", "date": "Seguimiento", "apply_url": "https://www.natura.com.ar/trabaja-con-nosotros", "official_url": "https://www.natura.com.ar/trabaja-con-nosotros"}, {"id": "accenture-sin-barreras", "title": "Programa Sin Barreras", "company": "Accenture", "domain": "accenture.com", "location": "Buenos Aires", "modality": "Consultar modalidad", "date": "Seguimiento", "apply_url": "https://www.accenture.com/ar-es/careers", "official_url": "https://www.accenture.com/ar-es/careers"}];
+let vacancies=[], baseCompanies=[], baseLinkedin=[];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const KEYS={companies:"mei_custom_companies_v4",people:"mei_custom_people_v4",sent:"mei_cv_sent_v4"};
-let customCompanies=JSON.parse(localStorage.getItem(KEYS.companies)||"[]");
-let customPeople=JSON.parse(localStorage.getItem(KEYS.people)||"[]");
-let sent=JSON.parse(localStorage.getItem(KEYS.sent)||"{}");
+const sent=JSON.parse(localStorage.getItem('mi-empleo-cv-enviado')||'{}');
+let addedCompanies=JSON.parse(localStorage.getItem('mi-empleo-empresas-agregadas')||'[]');
+let addedLinkedin=JSON.parse(localStorage.getItem('mi-empleo-linkedin-agregados')||'[]');
 
-function esc(v=""){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-function safeUrl(v){try{const u=new URL(v);return ["http:","https:"].includes(u.protocol)?u.href:"#"}catch{return "#"}}
-function logoUrl(domain){return domain?`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`:""}
-function initials(name=""){return name.split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()}
-function logoHTML(name,domain){return domain?`<img class="company-logo" src="${logoUrl(domain)}" alt="Logo de ${esc(name)}" onerror="this.outerHTML='<span class=&quot;logo-fallback&quot;>${esc(initials(name))}</span>'">`:`<span class="logo-fallback">${esc(initials(name))}</span>`}
+function saveSent(){localStorage.setItem('mi-empleo-cv-enviado',JSON.stringify(sent));}
+function saveCompanies(){localStorage.setItem('mi-empleo-empresas-agregadas',JSON.stringify(addedCompanies));}
+function saveLinkedin(){localStorage.setItem('mi-empleo-linkedin-agregados',JSON.stringify(addedLinkedin));}
+function allCompanies(){return [...baseCompanies,...addedCompanies];}
+function allLinkedin(){return [...baseLinkedin,...addedLinkedin];}
 
-function setupTabs(){$$(".tab").forEach(tab=>tab.addEventListener("click",()=>{$$(".tab").forEach(t=>t.classList.toggle("active",t===tab));$$(".panel").forEach(p=>p.classList.toggle("active",p.id===tab.dataset.tab))}))}
+async function loadData(showMessage=false){
+  try{
+    const stamp=Date.now();
+    const [v,c,l]=await Promise.all([
+      fetch('./vacancies.json?ts='+stamp,{cache:'no-store'}),
+      fetch('./companies.json?ts='+stamp,{cache:'no-store'}),
+      fetch('./linkedin_sources.json?ts='+stamp,{cache:'no-store'})
+    ]);
+    if(!v.ok||!c.ok||!l.ok) throw new Error('No se pudieron leer los archivos');
+    vacancies=await v.json();
+    baseCompanies=await c.json();
+    baseLinkedin=await l.json();
+    renderVacancies();
+    renderCompanies();
+    renderLinkedin();
+    if(showMessage) $('#statusText').textContent='La lista está actualizada.';
+  }catch(e){
+    $('#statusText').textContent='No se pudo actualizar. Revisá que todos los archivos estén subidos.';
+  }
+}
 
 function renderVacancies(){
- const box=$("#vacancyList");
- box.innerHTML=BASE_VACANCIES.map(v=>`<article class="job-card"><div class="job-head">${logoHTML(v.company,v.domain)}<div><h3 class="job-title">${esc(v.title)}</h3><p class="company-name">${esc(v.company)}</p></div></div><div class="chips"><span class="chip">📍 ${esc(v.location)}</span><span class="chip">🏠 ${esc(v.modality)}</span><span class="chip">📅 ${esc(v.date)}</span></div><label class="cv-line"><input type="checkbox" data-vacancy="${esc(v.id)}" ${sent[v.id]?"checked":""}>CV enviado</label><div class="job-actions"><a class="primary-btn" href="${safeUrl(v.apply_url)}" target="_blank">Postularme</a><a class="outline-btn" href="${safeUrl(v.official_url)}" target="_blank">Portal oficial</a></div></article>`).join("");
- $$("[data-vacancy]").forEach(c=>c.addEventListener("change",e=>{sent[e.target.dataset.vacancy]=e.target.checked;localStorage.setItem(KEYS.sent,JSON.stringify(sent))}))
+  const box=$('#vacancyList');
+  box.innerHTML='';
+  $('#vacancyCount').textContent=vacancies.length;
+
+  vacancies.forEach(v=>{
+    const card=document.createElement('article');
+    card.className='card';
+    card.innerHTML=`
+      <div class="company">${esc(v.company)}</div>
+      <h2>${esc(v.title)}</h2>
+      <div class="actions">
+        <a class="primary" href="${esc(v.url)}" target="_blank" rel="noopener">Postularme</a>
+        <a class="secondary" href="${esc(v.portal||v.url)}" target="_blank" rel="noopener">Portal oficial</a>
+      </div>
+      <label class="sent">
+        <input type="checkbox" data-vacancy="${esc(v.id)}" ${sent[v.id]?'checked':''}>
+        CV enviado
+      </label>`;
+    box.appendChild(card);
+  });
+
+  $('#vacancyEmpty').hidden=vacancies.length>0;
+  document.querySelectorAll('[data-vacancy]').forEach(x=>{
+    x.onchange=()=>{
+      sent[x.dataset.vacancy]=x.checked;
+      saveSent();
+    };
+  });
 }
 
-function renderPeople(){
- const all=[...BASE_PEOPLE.map(x=>({...x,custom:false})),...customPeople.map((x,i)=>({...x,custom:true,index:i}))];
- $("#linkedinList").innerHTML=all.map(p=>`<article class="linkedin-card"><div class="linkedin-top"><h3 class="linkedin-name">${esc(p.name)}</h3><span class="linkedin-badge">in</span></div><p class="linkedin-label">Última publicación</p><p class="linkedin-text">${esc(p.publication)}</p><a class="primary-btn" href="${safeUrl(p.url)}" target="_blank">Abrir publicación</a>${p.custom?`<button class="delete-mini delete-person" data-index="${p.index}">×</button>`:""}</article>`).join("");
- $$(".delete-person").forEach(b=>b.onclick=()=>{customPeople.splice(Number(b.dataset.index),1);localStorage.setItem(KEYS.people,JSON.stringify(customPeople));renderPeople()})
+function renderCompanies(){
+  const q=$('#companySearch').value.toLowerCase().trim();
+  const filtered=allCompanies().filter(c=>c.name.toLowerCase().includes(q));
+  const box=$('#companyList');
+  box.innerHTML='';
+
+  filtered.forEach(c=>{
+    const custom=addedCompanies.some(x=>x.name===c.name && x.url===c.url);
+    const card=document.createElement('article');
+    card.className='card company-card';
+    card.innerHTML=`
+      <div class="company">${esc(c.name)}</div>
+      <a href="${esc(c.url)}" target="_blank" rel="noopener">Abrir empresa</a>
+      ${custom?`<button class="delete-btn" data-delete-company="${esc(c.url)}">Eliminar empresa agregada</button>`:''}`;
+    box.appendChild(card);
+  });
+
+  $('#companyEmpty').hidden=filtered.length>0;
+  document.querySelectorAll('[data-delete-company]').forEach(b=>{
+    b.onclick=()=>{
+      addedCompanies=addedCompanies.filter(x=>x.url!==b.dataset.deleteCompany);
+      saveCompanies();
+      renderCompanies();
+    };
+  });
 }
 
-function renderCompanies(query=""){
- const q=query.trim().toLowerCase();
- const all=[...BASE_COMPANIES.map(x=>({...x,custom:false})),...customCompanies.map((x,i)=>({...x,custom:true,index:i}))].filter(c=>c.name.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name,"es"));
- $("#companyList").innerHTML=all.map(c=>`<article class="company-card">${logoHTML(c.name,c.domain)}<div class="company-info"><h3>${esc(c.name)}</h3><a href="${safeUrl(c.url)}" target="_blank">Abrir portal →</a></div>${c.custom?`<button class="delete-mini delete-company" data-index="${c.index}">×</button>`:""}</article>`).join("")||'<div class="empty">No se encontró esa empresa.</div>';
- $$(".delete-company").forEach(b=>b.onclick=()=>{customCompanies.splice(Number(b.dataset.index),1);localStorage.setItem(KEYS.companies,JSON.stringify(customCompanies));renderCompanies($("#companySearch").value)})
+function renderLinkedin(){
+  const list=allLinkedin();
+  const box=$('#linkedinSourceList');
+  box.innerHTML='';
+
+  list.forEach(p=>{
+    const custom=addedLinkedin.some(x=>x.name===p.name && x.url===p.url);
+    const card=document.createElement('article');
+    card.className='card person-card';
+    card.innerHTML=`
+      <div class="person">${esc(p.name)}</div>
+      <a href="${esc(p.url)}" target="_blank" rel="noopener">Abrir LinkedIn</a>
+      ${custom?`<button class="delete-btn" data-delete-linkedin="${esc(p.url)}">Eliminar persona agregada</button>`:''}`;
+    box.appendChild(card);
+  });
+
+  $('#linkedinEmpty').hidden=list.length>0;
+  document.querySelectorAll('[data-delete-linkedin]').forEach(b=>{
+    b.onclick=()=>{
+      addedLinkedin=addedLinkedin.filter(x=>x.url!==b.dataset.deleteLinkedin);
+      saveLinkedin();
+      renderLinkedin();
+    };
+  });
 }
 
-function setupDialogs(){
- const company=$("#companyModal"),person=$("#personModal");
- $("#openCompanyModal").onclick=()=>company.showModal();$("#openPersonModal").onclick=()=>person.showModal();$$(".close-dialog").forEach(b=>b.onclick=()=>b.closest("dialog").close());
- $("#companyForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);customCompanies.push({name:f.get("name").trim(),url:f.get("url").trim(),domain:f.get("domain").trim()});localStorage.setItem(KEYS.companies,JSON.stringify(customCompanies));e.currentTarget.reset();company.close();renderCompanies($("#companySearch").value)};
- $("#personForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);customPeople.push({name:f.get("name").trim(),publication:f.get("publication").trim(),url:f.get("url").trim()});localStorage.setItem(KEYS.people,JSON.stringify(customPeople));e.currentTarget.reset();person.close();renderPeople()};
+$('#companySearch').addEventListener('input',renderCompanies);
+
+$('#showCompanyForm').onclick=()=>{
+  $('#companyForm').hidden=false;
+  $('#companyName').focus();
+};
+$('#cancelCompany').onclick=()=>{
+  $('#companyForm').reset();
+  $('#companyForm').hidden=true;
+};
+$('#companyForm').onsubmit=e=>{
+  e.preventDefault();
+  const name=$('#companyName').value.trim();
+  const url=$('#companyUrl').value.trim();
+  if(!name||!url) return;
+  addedCompanies.push({name,url});
+  saveCompanies();
+  e.target.reset();
+  e.target.hidden=true;
+  renderCompanies();
+};
+
+$('#showLinkedinForm').onclick=()=>{
+  $('#linkedinForm').hidden=false;
+  $('#linkedinName').focus();
+};
+$('#cancelLinkedin').onclick=()=>{
+  $('#linkedinForm').reset();
+  $('#linkedinForm').hidden=true;
+};
+$('#linkedinForm').onsubmit=e=>{
+  e.preventDefault();
+  const name=$('#linkedinName').value.trim();
+  const url=$('#linkedinUrl').value.trim();
+  if(!name||!url) return;
+  addedLinkedin.push({name,url});
+  saveLinkedin();
+  e.target.reset();
+  e.target.hidden=true;
+  renderLinkedin();
+};
+
+document.querySelectorAll('.tab').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    $('#'+b.dataset.tab).classList.add('active');
+  };
+});
+
+$('#refreshBtn').onclick=()=>loadData(true);
+
+let deferredPrompt;
+const install=$('#installBtn');
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  install.hidden=false;
+});
+install.onclick=async()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt=null;
+  install.hidden=true;
+};
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',async()=>{
+    try{
+      const reg=await navigator.serviceWorker.register('./sw.js?v=3');
+      await reg.update();
+    }catch(e){}
+  });
 }
 
-function setupInstall(){let prompt;const btn=$("#installBtn");window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();prompt=e;btn.classList.remove("hidden")});btn.onclick=async()=>{if(!prompt)return;prompt.prompt();await prompt.userChoice;prompt=null;btn.classList.add("hidden")}}
-
-document.addEventListener("DOMContentLoaded",()=>{setupTabs();setupDialogs();setupInstall();$("#refreshBtn").onclick=()=>location.reload();$("#companySearch").oninput=e=>renderCompanies(e.target.value);renderVacancies();renderPeople();renderCompanies();if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(console.error)})
+loadData(false);
