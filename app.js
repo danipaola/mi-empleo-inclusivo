@@ -1,198 +1,32 @@
 
-let vacancies=[], baseCompanies=[], baseLinkedin=[];
-const $=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const BASE_LINKEDIN=[{"name": "Julieta Mariela Moranzoni", "profile": "https://www.linkedin.com/in/julieta-mariela-moranzoni-27a4a736", "type": "Oportunidad laboral", "job": "Administrativo/a de Producción", "company": "SUMATE – Consultora en inclusión", "location": "Buenos Aires", "date": "Publicación guardada", "post": "https://www.linkedin.com/search/results/content/?keywords=%22Administrativo%20de%20Producci%C3%B3n%22%20%22Julieta%20Mariela%20Moranzoni%22"}, {"name": "Silvina Alonso", "profile": "https://www.linkedin.com/in/silvina-alonso-22243a46", "type": "Oportunidad Laboral para Personas con Discapacidad", "job": "Ingeniera/o Microsoft Fabric", "company": "Entidad financiera", "location": "No informada", "date": "Publicado hace 3 semanas", "post": "https://www.linkedin.com/posts/silvina-alonso-22243a46_empleo-oportunidades-oportunidadlaboral-activity-7475273670517526528-n_g0"}, {"name": "Karina Guerschberg", "profile": "https://www.linkedin.com/in/karina-guerschberg", "type": "BÚSQUEDA LABORAL (solo comparto)", "job": "Orientador/a – Taller Manual (Turno Tarde)", "company": "Centro de Día para jóvenes y adultos con discapacidad intelectual", "location": "Vicente López", "date": "Publicado hace 1 semana", "post": "https://www.linkedin.com/search/results/content/?keywords=%22Orientador%2Fa%22%20%22Taller%20Manual%22%20%22Karina%20Guerschberg%22"}];
+const BASE_COMPANIES=[{"name": "Accenture", "url": "https://www.accenture.com/ar-es/careers", "domain": "accenture.com"}, {"name": "Arcor", "url": "https://www.arcor.com/ar/trabaja-con-nosotros", "domain": "arcor.com"}, {"name": "Banco Galicia", "url": "https://www.galicia.ar/personas/trabaja-con-nosotros", "domain": "galicia.ar"}, {"name": "Banco Nación", "url": "https://www.bna.com.ar/Institucional/TrabajaConNosotros", "domain": "bna.com.ar"}, {"name": "Banco Provincia", "url": "https://www.bancoprovincia.com.ar/web/trabaja_con_nosotros", "domain": "bancoprovincia.com.ar"}, {"name": "CILSA", "url": "https://www.cilsa.org/", "domain": "cilsa.org"}, {"name": "Coca-Cola FEMSA", "url": "https://coca-colafemsa.com/trabaja-con-nosotros/", "domain": "coca-colafemsa.com"}, {"name": "Coto", "url": "https://www.coto.com.ar/empleos/", "domain": "coto.com.ar"}, {"name": "Globant", "url": "https://career.globant.com/", "domain": "globant.com"}, {"name": "IBM", "url": "https://www.ibm.com/careers", "domain": "ibm.com"}, {"name": "Mercado Libre", "url": "https://careers-meli.mercadolibre.com/", "domain": "mercadolibre.com"}, {"name": "Natura", "url": "https://www.natura.com.ar/trabaja-con-nosotros", "domain": "natura.com.ar"}, {"name": "Randstad", "url": "https://www.randstad.com.ar/trabajos/", "domain": "randstad.com.ar"}, {"name": "Toyota Argentina", "url": "https://www.toyota.com.ar/trabaja-con-nosotros", "domain": "toyota.com.ar"}, {"name": "Unilever", "url": "https://careers.unilever.com/", "domain": "unilever.com"}, {"name": "YPF", "url": "https://www.ypf.com/trabaja-con-nosotros", "domain": "ypf.com"}];
+const KEYS={people:"mei_people_v21",companies:"mei_companies_v21"};
+let customPeople=JSON.parse(localStorage.getItem(KEYS.people)||"[]");
+let customCompanies=JSON.parse(localStorage.getItem(KEYS.companies)||"[]");
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safe=v=>{try{const u=new URL(v);return ["http:","https:"].includes(u.protocol)?u.href:"#"}catch{return"#"}};
+const logo=d=>`https://www.google.com/s2/favicons?domain=${encodeURIComponent(d)}&sz=128`;
+const initials=n=>n.split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase();
 
-const sent=JSON.parse(localStorage.getItem('mi-empleo-cv-enviado')||'{}');
-let addedCompanies=JSON.parse(localStorage.getItem('mi-empleo-empresas-agregadas')||'[]');
-let addedLinkedin=JSON.parse(localStorage.getItem('mi-empleo-linkedin-agregados')||'[]');
-
-function saveSent(){localStorage.setItem('mi-empleo-cv-enviado',JSON.stringify(sent));}
-function saveCompanies(){localStorage.setItem('mi-empleo-empresas-agregadas',JSON.stringify(addedCompanies));}
-function saveLinkedin(){localStorage.setItem('mi-empleo-linkedin-agregados',JSON.stringify(addedLinkedin));}
-function allCompanies(){return [...baseCompanies,...addedCompanies];}
-function allLinkedin(){return [...baseLinkedin,...addedLinkedin];}
-
-async function loadData(showMessage=false){
-  try{
-    const stamp=Date.now();
-    const [v,c,l]=await Promise.all([
-      fetch('./vacancies.json?ts='+stamp,{cache:'no-store'}),
-      fetch('./companies.json?ts='+stamp,{cache:'no-store'}),
-      fetch('./linkedin_sources.json?ts='+stamp,{cache:'no-store'})
-    ]);
-    if(!v.ok||!c.ok||!l.ok) throw new Error('No se pudieron leer los archivos');
-    vacancies=await v.json();
-    baseCompanies=await c.json();
-    baseLinkedin=await l.json();
-    renderVacancies();
-    renderCompanies();
-    renderLinkedin();
-    if(showMessage) $('#statusText').textContent='La lista está actualizada.';
-  }catch(e){
-    $('#statusText').textContent='No se pudo actualizar. Revisá que todos los archivos estén subidos.';
-  }
-}
-
-function renderVacancies(){
-  const box=$('#vacancyList');
-  box.innerHTML='';
-  $('#vacancyCount').textContent=vacancies.length;
-
-  vacancies.forEach(v=>{
-    const card=document.createElement('article');
-    card.className='card';
-    card.innerHTML=`
-      <div class="company">${esc(v.company)}</div>
-      <h2>${esc(v.title)}</h2>
-      <div class="actions">
-        <a class="primary" href="${esc(v.url)}" target="_blank" rel="noopener">Postularme</a>
-        <a class="secondary" href="${esc(v.portal||v.url)}" target="_blank" rel="noopener">Portal oficial</a>
-      </div>
-      <label class="sent">
-        <input type="checkbox" data-vacancy="${esc(v.id)}" ${sent[v.id]?'checked':''}>
-        CV enviado
-      </label>`;
-    box.appendChild(card);
-  });
-
-  $('#vacancyEmpty').hidden=vacancies.length>0;
-  document.querySelectorAll('[data-vacancy]').forEach(x=>{
-    x.onchange=()=>{
-      sent[x.dataset.vacancy]=x.checked;
-      saveSent();
-    };
-  });
-}
-
-function renderCompanies(){
-  const q=$('#companySearch').value.toLowerCase().trim();
-  const filtered=allCompanies().filter(c=>c.name.toLowerCase().includes(q));
-  const box=$('#companyList');
-  box.innerHTML='';
-
-  filtered.forEach(c=>{
-    const custom=addedCompanies.some(x=>x.name===c.name && x.url===c.url);
-    const card=document.createElement('article');
-    card.className='card company-card';
-    card.innerHTML=`
-      <div class="company">${esc(c.name)}</div>
-      <a href="${esc(c.url)}" target="_blank" rel="noopener">Abrir empresa</a>
-      ${custom?`<button class="delete-btn" data-delete-company="${esc(c.url)}">Eliminar empresa agregada</button>`:''}`;
-    box.appendChild(card);
-  });
-
-  $('#companyEmpty').hidden=filtered.length>0;
-  document.querySelectorAll('[data-delete-company]').forEach(b=>{
-    b.onclick=()=>{
-      addedCompanies=addedCompanies.filter(x=>x.url!==b.dataset.deleteCompany);
-      saveCompanies();
-      renderCompanies();
-    };
-  });
-}
-
+function tabs(){$$(".tab").forEach(b=>b.onclick=()=>{$$(".tab").forEach(x=>x.classList.toggle("active",x===b));$$(".panel").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab))})}
 function renderLinkedin(){
-  const list=allLinkedin();
-  const box=$('#linkedinSourceList');
-  box.innerHTML='';
-
-  list.forEach(p=>{
-    const custom=addedLinkedin.some(x=>x.name===p.name && x.url===p.url);
-    const card=document.createElement('article');
-    card.className='card person-card';
-    card.innerHTML=`
-      <div class="person">${esc(p.name)}</div>
-      <a href="${esc(p.url)}" target="_blank" rel="noopener">Abrir LinkedIn</a>
-      ${custom?`<button class="delete-btn" data-delete-linkedin="${esc(p.url)}">Eliminar persona agregada</button>`:''}`;
-    box.appendChild(card);
-  });
-
-  $('#linkedinEmpty').hidden=list.length>0;
-  document.querySelectorAll('[data-delete-linkedin]').forEach(b=>{
-    b.onclick=()=>{
-      addedLinkedin=addedLinkedin.filter(x=>x.url!==b.dataset.deleteLinkedin);
-      saveLinkedin();
-      renderLinkedin();
-    };
-  });
+ const all=[...BASE_LINKEDIN,...customPeople.map(p=>({...p,type:"Persona agregada",job:"Publicación pendiente",company:"LinkedIn",location:"",date:"Abrí el perfil para revisar sus publicaciones",post:p.profile,custom:true}))];
+ $("#linkedinList").innerHTML=all.map(p=>`<article class="linkedin-card"><div class="card-top"><h3 class="person">${esc(p.name)}</h3><span class="badge">LinkedIn</span></div><div class="type">🟢 ${esc(p.type)}</div><div class="meta"><div>💼 <span><strong>${esc(p.job)}</strong></span></div><div>🏢 <span>${esc(p.company)}</span></div>${p.location?`<div>📍 <span>${esc(p.location)}</span></div>`:""}<div>📅 <span>${esc(p.date)}</span></div></div><div class="actions"><a class="primary" target="_blank" href="${safe(p.post)}">Abrir publicación</a><a class="secondary" target="_blank" href="${safe(p.profile)}">Ver perfil</a></div>${p.custom?'<div class="custom-note">Todavía no hay una publicación específica guardada.</div>':""}</article>`).join("");
 }
-
-$('#companySearch').addEventListener('input',renderCompanies);
-
-$('#showCompanyForm').onclick=()=>{
-  $('#companyForm').hidden=false;
-  $('#companyName').focus();
-};
-$('#cancelCompany').onclick=()=>{
-  $('#companyForm').reset();
-  $('#companyForm').hidden=true;
-};
-$('#companyForm').onsubmit=e=>{
-  e.preventDefault();
-  const name=$('#companyName').value.trim();
-  const url=$('#companyUrl').value.trim();
-  if(!name||!url) return;
-  addedCompanies.push({name,url});
-  saveCompanies();
-  e.target.reset();
-  e.target.hidden=true;
-  renderCompanies();
-};
-
-$('#showLinkedinForm').onclick=()=>{
-  $('#linkedinForm').hidden=false;
-  $('#linkedinName').focus();
-};
-$('#cancelLinkedin').onclick=()=>{
-  $('#linkedinForm').reset();
-  $('#linkedinForm').hidden=true;
-};
-$('#linkedinForm').onsubmit=e=>{
-  e.preventDefault();
-  const name=$('#linkedinName').value.trim();
-  const url=$('#linkedinUrl').value.trim();
-  if(!name||!url) return;
-  addedLinkedin.push({name,url});
-  saveLinkedin();
-  e.target.reset();
-  e.target.hidden=true;
-  renderLinkedin();
-};
-
-document.querySelectorAll('.tab').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    $('#'+b.dataset.tab).classList.add('active');
-  };
-});
-
-$('#refreshBtn').onclick=()=>loadData(true);
-
-let deferredPrompt;
-const install=$('#installBtn');
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();
-  deferredPrompt=e;
-  install.hidden=false;
-});
-install.onclick=async()=>{
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt=null;
-  install.hidden=true;
-};
-
-if('serviceWorker' in navigator){
-  window.addEventListener('load',async()=>{
-    try{
-      const reg=await navigator.serviceWorker.register('./sw.js?v=3');
-      await reg.update();
-    }catch(e){}
-  });
+function renderCompanies(q=""){
+ const all=[...BASE_COMPANIES,...customCompanies].filter(x=>x.name.toLowerCase().includes(q.toLowerCase())).sort((a,b)=>a.name.localeCompare(b.name,"es"));
+ $("#companyList").innerHTML=all.map(c=>`<article class="company">${c.domain?`<img class="logo" src="${logo(c.domain)}" onerror="this.outerHTML='<span class=&quot;fallback&quot;>${esc(initials(c.name))}</span>'">`:`<span class="fallback">${esc(initials(c.name))}</span>`}<div class="company-info"><h3>${esc(c.name)}</h3><a href="${safe(c.url)}" target="_blank">Abrir portal →</a></div></article>`).join("");
 }
-
-loadData(false);
+function dialogs(){
+ const pm=$("#personModal"),cm=$("#companyModal"),im=$("#infoModal");
+ $("#openPerson").onclick=()=>pm.showModal();$("#openCompany").onclick=()=>cm.showModal();$("#refreshLinkedin").onclick=()=>im.showModal();
+ $$(".close").forEach(b=>b.onclick=()=>b.closest("dialog").close());$(".close-info").onclick=()=>im.close();
+ $("#personForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);customPeople.push({name:f.get("name").trim(),profile:f.get("profile").trim()});localStorage.setItem(KEYS.people,JSON.stringify(customPeople));e.currentTarget.reset();pm.close();renderLinkedin()};
+ $("#companyForm").onsubmit=e=>{e.preventDefault();const f=new FormData(e.currentTarget);customCompanies.push({name:f.get("name").trim(),url:f.get("url").trim(),domain:f.get("domain").trim()});localStorage.setItem(KEYS.companies,JSON.stringify(customCompanies));e.currentTarget.reset();cm.close();renderCompanies($("#companySearch").value)};
+}
+function install(){
+ let p;const b=$("#installBtn");window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();p=e;b.classList.remove("hidden")});b.onclick=async()=>{if(!p)return;p.prompt();await p.userChoice;p=null;b.classList.add("hidden")}
+}
+document.addEventListener("DOMContentLoaded",()=>{tabs();dialogs();install();$("#companySearch").oninput=e=>renderCompanies(e.target.value);renderLinkedin();renderCompanies();if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{})})
