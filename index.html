@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d95fa4">
+<title>Mi Empleo Inclusivo</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./styles.css">
+<link rel="icon" href="./icon-192.png">
+</head>
+<body>
+<header class="hero">
+  <h1>Mi Empleo Inclusivo</h1>
+  <p>Vacantes relacionadas con mi perfil profesional.</p>
+  <button id="installBtn" hidden>Instalar app</button>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="vacancies">Vacantes</button>
+  <button class="tab" data-tab="linkedin">LinkedIn</button>
+  <button class="tab" data-tab="companies">Empresas</button>
+</nav>
+
+<main>
+  <section id="vacancies" class="panel active">
+    <div class="topbar">
+      <div><span>Vacantes disponibles</span><strong id="vacancyCount">0</strong></div>
+      <button id="refreshBtn">Actualizar</button>
+    </div>
+    <p id="statusText"></p>
+    <div id="vacancyList" class="cards"></div>
+    <div id="vacancyEmpty" class="empty">No hay vacantes cargadas.</div>
+  </section>
+
+  <section id="linkedin" class="panel">
+    <div id="linkedinList" class="cards"></div>
+    <div id="linkedinEmpty" class="empty">No hay publicaciones cargadas.</div>
+  </section>
+
+  <section id="companies" class="panel">
+    <div id="companyList" class="cards"></div>
+  </section>
+</main>
+
+<script src="./app.js"></script>
+</body>
+</html>
