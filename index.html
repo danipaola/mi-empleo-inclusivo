@@ -3,79 +3,80 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#d95fa4">
+<meta name="theme-color" content="#d957a1">
 <title>Mi Empleo Inclusivo</title>
-<link rel="manifest" href="./manifest.webmanifest?v=3">
-<link rel="stylesheet" href="./styles.css?v=3">
-<link rel="icon" href="./icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="icons/icon-192.png">
 </head>
 <body>
 <header class="hero">
-  <h1>Mi Empleo Inclusivo</h1>
-  <p>Vacantes relacionadas con mi perfil profesional.</p>
-  <button id="installBtn" hidden>Instalar app</button>
+  <div class="brand"><span class="briefcase">💼</span><div><small>Mi búsqueda laboral</small><h1>Mi Empleo Inclusivo</h1></div></div>
+  <button id="installBtn" class="install hidden">Instalar</button>
 </header>
 
 <nav class="tabs">
-  <button class="tab active" data-tab="vacancies">Vacantes</button>
+  <button class="tab active" data-tab="vacantes">💼 Vacantes</button>
   <button class="tab" data-tab="linkedin">LinkedIn</button>
-  <button class="tab" data-tab="companies">Empresas</button>
+  <button class="tab" data-tab="empresas">🏢 Empresas</button>
 </nav>
 
 <main>
-  <section id="vacancies" class="panel active">
-    <div class="topbar">
-      <div><span>Vacantes disponibles</span><strong id="vacancyCount">0</strong></div>
-      <button id="refreshBtn">Actualizar</button>
-    </div>
-    <p id="statusText"></p>
-    <div id="vacancyList" class="cards"></div>
-    <div id="vacancyEmpty" class="empty">No hay vacantes cargadas.</div>
-  </section>
+<section id="vacantes" class="panel active">
+  <div class="title-row"><div><h2>Vacantes reales</h2><p>Acá se muestran únicamente publicaciones con un enlace verificable.</p></div></div>
+  <div class="notice">
+    <strong>Sin vacantes inventadas.</strong>
+    <span>Cuando cargues una publicación real, aparecerá en esta sección.</span>
+  </div>
+</section>
 
-  <section id="linkedin" class="panel">
-    <button class="add-btn" id="showLinkedinForm">+ Agregar persona</button>
+<section id="linkedin" class="panel">
+  <div class="title-row">
+    <div><h2>LinkedIn</h2><p>Publicaciones laborales guardadas.</p></div>
+    <div class="row-actions"><button id="refreshLinkedin" class="round" title="Actualizar">↻</button><button id="openPerson" class="round" title="Agregar persona">＋</button></div>
+  </div>
+  <div id="linkedinList" class="list"></div>
+</section>
 
-    <form id="linkedinForm" class="form-card" hidden>
-      <label>Nombre completo
-        <input id="linkedinName" required placeholder="Ej.: María Pérez">
-      </label>
-      <label>Link de LinkedIn
-        <input id="linkedinUrl" type="url" required placeholder="https://www.linkedin.com/in/...">
-      </label>
-      <div class="form-actions">
-        <button type="submit" class="primary-btn">Guardar</button>
-        <button type="button" id="cancelLinkedin" class="outline-btn">Cancelar</button>
-      </div>
-    </form>
-
-    <div id="linkedinSourceList" class="cards"></div>
-    <div id="linkedinEmpty" class="empty">No hay personas cargadas.</div>
-  </section>
-
-  <section id="companies" class="panel">
-    <input id="companySearch" class="search" type="search" placeholder="Buscar empresa">
-
-    <button class="add-btn" id="showCompanyForm">+ Agregar empresa</button>
-
-    <form id="companyForm" class="form-card" hidden>
-      <label>Nombre de la empresa
-        <input id="companyName" required placeholder="Ej.: Nueva empresa">
-      </label>
-      <label>Link del portal
-        <input id="companyUrl" type="url" required placeholder="https://...">
-      </label>
-      <div class="form-actions">
-        <button type="submit" class="primary-btn">Guardar</button>
-        <button type="button" id="cancelCompany" class="outline-btn">Cancelar</button>
-      </div>
-    </form>
-
-    <div id="companyList" class="cards"></div>
-    <div id="companyEmpty" class="empty">No se encontró esa empresa.</div>
-  </section>
+<section id="empresas" class="panel">
+  <div class="title-row">
+    <div><h2>Empresas inclusivas</h2><p>Portales laborales cargados.</p></div>
+    <button id="openCompany" class="round">＋</button>
+  </div>
+  <div class="search"><span>⌕</span><input id="companySearch" placeholder="Buscar empresa"></div>
+  <div id="companyList" class="company-grid"></div>
+</section>
 </main>
 
-<script src="./app.js?v=3"></script>
+<dialog id="personModal">
+<form id="personForm">
+  <div class="dialog-head"><h3>Agregar persona</h3><button type="button" class="close">×</button></div>
+  <label>Nombre completo<input name="name" required></label>
+  <label>Link del perfil de LinkedIn<input name="profile" type="url" required placeholder="https://www.linkedin.com/in/..."></label>
+  <p class="help">La persona se agrega a la lista. Para mostrar una publicación específica, después podés guardar su enlace cuando lo tengas.</p>
+  <button class="primary" type="submit">Agregar persona</button>
+</form>
+</dialog>
+
+<dialog id="companyModal">
+<form id="companyForm">
+  <div class="dialog-head"><h3>Agregar empresa</h3><button type="button" class="close">×</button></div>
+  <label>Nombre<input name="name" required></label>
+  <label>Portal de empleos<input name="url" type="url" required></label>
+  <label>Dominio del logo <small>(opcional)</small><input name="domain" placeholder="empresa.com"></label>
+  <button class="primary" type="submit">Guardar empresa</button>
+</form>
+</dialog>
+
+<dialog id="infoModal">
+<div class="info-box">
+  <div class="dialog-head"><h3>Actualizar LinkedIn</h3><button type="button" class="close">×</button></div>
+  <p>Esta versión actualiza los datos guardados de la app, pero GitHub Pages no puede leer automáticamente las publicaciones de LinkedIn.</p>
+  <p>Los botones <strong>Abrir publicación</strong> llevan a la publicación o a una búsqueda directa en LinkedIn.</p>
+  <button class="primary close-info">Entendido</button>
+</div>
+</dialog>
+
+<script src="app.js"></script>
 </body>
 </html>
