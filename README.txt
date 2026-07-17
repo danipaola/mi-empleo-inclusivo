@@ -1,14 +1,11 @@
-Mi Empleo Inclusivo - Beta 1
+Mi Empleo Inclusivo
 
-Cambios incluidos para esta beta:
-- Sin contadores.
-- Diseño tipo app.
-- LinkedIn:
-  * Nombre
-  * Última publicación
-  * Botón Abrir publicación
-  * Se eliminó el campo 'Puesto'.
-- Empresas con logo y buscador.
-- Vacantes con checkbox 'CV enviado'.
+Subí todos estos archivos y carpetas a GitHub reemplazando los anteriores.
+Esta versión tiene los datos incluidos dentro de app.js para que no aparezcan vacíos:
+- Empresas cargadas
+- Julieta, Silvina y Karina cargadas
+- Vacantes de seguimiento cargadas
+- LinkedIn sin foto y sin Puesto
 
-Esta beta está pensada para seguir ajustándola según tus comentarios.
+Después de subirla, esperá unos minutos y actualizá la página.
+Si aparece la versión anterior, borrá los datos del sitio o desinstalá y volvé a instalar la app.

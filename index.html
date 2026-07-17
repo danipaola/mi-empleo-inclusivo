@@ -32,10 +32,7 @@
   <main>
     <section id="vacancies" class="panel active">
       <div class="section-bar">
-        <div>
-          <h2>Vacantes para mi perfil</h2>
-          <p>Administración, RRHH administrativo, back office, help desk y tareas relacionadas.</p>
-        </div>
+        <div><h2>Vacantes para mi perfil</h2><p>Administración, RRHH administrativo, back office y soporte.</p></div>
         <button id="refreshBtn" class="icon-btn" title="Actualizar">↻</button>
       </div>
       <div id="vacancyList" class="card-list"></div>
@@ -43,10 +40,7 @@
 
     <section id="linkedin" class="panel">
       <div class="section-bar">
-        <div>
-          <h2>Publicaciones de LinkedIn</h2>
-          <p>Accesos rápidos a oportunidades compartidas.</p>
-        </div>
+        <div><h2>Publicaciones de LinkedIn</h2><p>Accesos rápidos a oportunidades compartidas.</p></div>
         <button id="openPersonModal" class="add-circle" title="Agregar persona">＋</button>
       </div>
       <div id="linkedinList" class="card-list"></div>
@@ -54,26 +48,17 @@
 
     <section id="companies" class="panel">
       <div class="section-bar">
-        <div>
-          <h2>Empresas inclusivas</h2>
-          <p>Buscá y abrí directamente sus portales.</p>
-        </div>
+        <div><h2>Empresas inclusivas</h2><p>Ya están cargadas. Usá el + solo para una empresa nueva.</p></div>
         <button id="openCompanyModal" class="add-circle" title="Agregar empresa">＋</button>
       </div>
-      <div class="search-box">
-        <span>⌕</span>
-        <input id="companySearch" type="search" placeholder="Buscar empresa">
-      </div>
+      <div class="search-box"><span>⌕</span><input id="companySearch" type="search" placeholder="Buscar empresa"></div>
       <div id="companyList" class="company-grid"></div>
     </section>
   </main>
 
   <dialog id="companyModal">
     <form id="companyForm">
-      <div class="dialog-head">
-        <h3>Agregar empresa</h3>
-        <button type="button" class="dialog-close close-dialog">×</button>
-      </div>
+      <div class="dialog-head"><h3>Agregar empresa nueva</h3><button type="button" class="dialog-close close-dialog">×</button></div>
       <label>Nombre de la empresa<input name="name" required></label>
       <label>Link del portal de empleos<input name="url" type="url" required placeholder="https://..."></label>
       <label>Dominio para el logo <small>(opcional)</small><input name="domain" placeholder="empresa.com"></label>
@@ -83,10 +68,7 @@
 
   <dialog id="personModal">
     <form id="personForm">
-      <div class="dialog-head">
-        <h3>Agregar publicación</h3>
-        <button type="button" class="dialog-close close-dialog">×</button>
-      </div>
+      <div class="dialog-head"><h3>Agregar publicación</h3><button type="button" class="dialog-close close-dialog">×</button></div>
       <label>Nombre completo<input name="name" required></label>
       <label>Última publicación<input name="publication" required></label>
       <label>Link de la publicación<input name="url" type="url" required placeholder="https://www.linkedin.com/..."></label>
