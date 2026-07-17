@@ -1,82 +1,103 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#d957a1">
-<title>Mi Empleo Inclusivo</title>
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="styles.css">
-<link rel="icon" href="icons/icon-192.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#d84a91">
+  <meta name="description" content="Vacantes y fuentes de empleo inclusivo para uso personal.">
+  <title>Mi Empleo Inclusivo</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="hero">
-  <div class="brand"><span class="briefcase">💼</span><div><small>Mi búsqueda laboral</small><h1>Mi Empleo Inclusivo</h1></div></div>
-  <button id="installBtn" class="install hidden">Instalar</button>
-</header>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Mi búsqueda laboral</p>
+      <h1>Mi Empleo Inclusivo</h1>
+    </div>
+    <button id="installBtn" class="secondary hidden">Instalar app</button>
+  </header>
 
-<nav class="tabs">
-  <button class="tab active" data-tab="vacantes">💼 Vacantes</button>
-  <button class="tab" data-tab="linkedin">LinkedIn</button>
-  <button class="tab" data-tab="empresas">🏢 Empresas</button>
-</nav>
+  <main>
+    <section class="summary" aria-label="Resumen">
+      <article><strong id="vacancyCount">0</strong><span>vacantes nuevas</span></article>
+      <article><strong id="publicationCount">0</strong><span>publicaciones</span></article>
+      <article><strong id="companyCount">0</strong><span>empresas guardadas</span></article>
+    </section>
 
-<main>
-<section id="vacantes" class="panel active">
-  <div class="title-row"><div><h2>Vacantes reales</h2><p>Acá se muestran únicamente publicaciones con un enlace verificable.</p></div></div>
-  <div class="notice">
-    <strong>Sin vacantes inventadas.</strong>
-    <span>Cuando cargues una publicación real, aparecerá en esta sección.</span>
-  </div>
-</section>
+    <nav class="tabs" aria-label="Secciones">
+      <button class="tab active" data-tab="vacancies">Vacantes</button>
+      <button class="tab" data-tab="companies">Empresas</button>
+      <button class="tab" data-tab="linkedin">LinkedIn</button>
+    </nav>
 
-<section id="linkedin" class="panel">
-  <div class="title-row">
-    <div><h2>LinkedIn</h2><p>Publicaciones laborales guardadas.</p></div>
-    <div class="row-actions"><button id="refreshLinkedin" class="round" title="Actualizar">↻</button><button id="openPerson" class="round" title="Agregar persona">＋</button></div>
-  </div>
-  <div id="linkedinList" class="list"></div>
-</section>
+    <section id="vacancies" class="panel active">
+      <div class="section-head">
+        <div>
+          <h2>Vacantes para mi perfil</h2>
+          <p>Administración, RRHH administrativo, back office, help desk y tareas relacionadas.</p>
+        </div>
+        <button id="refreshBtn" class="secondary">Actualizar</button>
+      </div>
+      <div id="vacancyList" class="cards"></div>
+    </section>
 
-<section id="empresas" class="panel">
-  <div class="title-row">
-    <div><h2>Empresas inclusivas</h2><p>Portales laborales cargados.</p></div>
-    <button id="openCompany" class="round">＋</button>
-  </div>
-  <div class="search"><span>⌕</span><input id="companySearch" placeholder="Buscar empresa"></div>
-  <div id="companyList" class="company-grid"></div>
-</section>
-</main>
+    <section id="companies" class="panel">
+      <div class="section-head">
+        <div>
+          <h2>Empresas inclusivas</h2>
+          <p>Buscá una empresa y abrí su portal de empleos.</p>
+        </div>
+        <button id="openCompanyModal" class="primary">+ Agregar empresa</button>
+      </div>
+      <label class="search-label">
+        <span>Buscar empresa</span>
+        <input id="companySearch" type="search" placeholder="Ejemplo: Arcor">
+      </label>
+      <div id="companyList" class="cards compact"></div>
+    </section>
 
-<dialog id="personModal">
-<form id="personForm">
-  <div class="dialog-head"><h3>Agregar persona</h3><button type="button" class="close">×</button></div>
-  <label>Nombre completo<input name="name" required></label>
-  <label>Link del perfil de LinkedIn<input name="profile" type="url" required placeholder="https://www.linkedin.com/in/..."></label>
-  <p class="help">La persona se agrega a la lista. Para mostrar una publicación específica, después podés guardar su enlace cuando lo tengas.</p>
-  <button class="primary" type="submit">Agregar persona</button>
-</form>
-</dialog>
+    <section id="linkedin" class="panel">
+      <div class="section-head">
+        <div>
+          <h2>Publicaciones de LinkedIn</h2>
+          <p>Acceso directo a oportunidades compartidas por personas que seguís.</p>
+        </div>
+        <button id="openPersonModal" class="primary">+ Agregar persona</button>
+      </div>
+      <div id="linkedinList" class="cards"></div>
+    </section>
+  </main>
 
-<dialog id="companyModal">
-<form id="companyForm">
-  <div class="dialog-head"><h3>Agregar empresa</h3><button type="button" class="close">×</button></div>
-  <label>Nombre<input name="name" required></label>
-  <label>Portal de empleos<input name="url" type="url" required></label>
-  <label>Dominio del logo <small>(opcional)</small><input name="domain" placeholder="empresa.com"></label>
-  <button class="primary" type="submit">Guardar empresa</button>
-</form>
-</dialog>
+  <dialog id="companyModal">
+    <form id="companyForm" method="dialog">
+      <h3>Agregar empresa</h3>
+      <label>Nombre de la empresa<input name="name" required></label>
+      <label>Link del portal de empleos<input name="url" type="url" required placeholder="https://..."></label>
+      <div class="dialog-actions">
+        <button type="button" class="secondary close-dialog">Cancelar</button>
+        <button type="submit" class="primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
 
-<dialog id="infoModal">
-<div class="info-box">
-  <div class="dialog-head"><h3>Actualizar LinkedIn</h3><button type="button" class="close">×</button></div>
-  <p>Esta versión actualiza los datos guardados de la app, pero GitHub Pages no puede leer automáticamente las publicaciones de LinkedIn.</p>
-  <p>Los botones <strong>Abrir publicación</strong> llevan a la publicación o a una búsqueda directa en LinkedIn.</p>
-  <button class="primary close-info">Entendido</button>
-</div>
-</dialog>
+  <dialog id="personModal">
+    <form id="personForm" method="dialog">
+      <h3>Agregar publicación</h3>
+      <label>Nombre completo<input name="name" required></label>
+      <label>Última publicación<input name="publication" required></label>
+      <label>Puesto<input name="position" required></label>
+      <label>Link de la publicación<input name="url" type="url" required placeholder="https://www.linkedin.com/..."></label>
+      <div class="dialog-actions">
+        <button type="button" class="secondary close-dialog">Cancelar</button>
+        <button type="submit" class="primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
 
-<script src="app.js"></script>
+  <footer>Datos guardados únicamente en este dispositivo.</footer>
+  <script src="app.js" defer></script>
 </body>
 </html>
