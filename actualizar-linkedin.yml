@@ -1,0 +1,38 @@
+name: Actualizar publicaciones de LinkedIn
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Todos los días a las 12:15 UTC (09:15 de Argentina)
+    - cron: "15 12 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Buscar publicaciones públicas
+        run: python scripts/buscar_linkedin.py
+
+      - name: Guardar cambios encontrados
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add linkedin.json
+          if git diff --cached --quiet; then
+            echo "No hay publicaciones nuevas."
+          else
+            git commit -m "Actualizar publicaciones públicas de LinkedIn"
+            git push
+          fi

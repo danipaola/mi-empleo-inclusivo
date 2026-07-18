@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Julieta Mariela Moranzoni",
+    "profile": "https://www.linkedin.com/in/julieta-mariela-moranzoni-27a4a736",
+    "keywords": [
+      "oportunidad laboral",
+      "vacante",
+      "empleo",
+      "inclusión",
+      "discapacidad",
+      "administrativo",
+      "administrativa"
+    ],
+    "active": true
+  },
+  {
+    "name": "Silvina Alonso",
+    "profile": "https://www.linkedin.com/in/silvina-alonso-22243a46",
+    "keywords": [
+      "oportunidad laboral",
+      "vacante",
+      "empleo",
+      "inclusión",
+      "discapacidad"
+    ],
+    "active": true
+  },
+  {
+    "name": "Karina Guerschberg",
+    "profile": "https://www.linkedin.com/in/karina-guerschberg",
+    "keywords": [
+      "búsqueda laboral",
+      "oportunidad laboral",
+      "vacante",
+      "empleo",
+      "discapacidad",
+      "inclusión"
+    ],
+    "active": true
+  }
+]
